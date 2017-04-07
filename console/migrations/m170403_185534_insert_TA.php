@@ -6,13 +6,13 @@ class m170403_185534_insert_TA extends Migration
 {
     public function safeUp()
     {
-        $this->insert('ta',['name' => 'Mostafa Yehia',
+        $this->insert('TA',['name' => 'Mostafa Yehia',
             'password' => '12345',
             'gpa' => '3']);
-        $this->insert('ta',['name' => 'Ahmed Hossam',
+        $this->insert('TA',['name' => 'Ahmed Hossam',
             'password' => '11111',
             'gpa' => '3.2']);
-        $this->insert('ta',['name' => 'Abdulrahman Omar',
+        $this->insert('TA',['name' => 'Abdulrahman Omar',
             'password' => '22222',
             'gpa' => '3.4']);
     }

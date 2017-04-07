@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <table>
-                <form method = "post" action = "<?=Url::to (['site/loginproject'])?>"> 
+                <form method = "post" action = "<?=Url::to(['site/loginproject'])?>"> 
                     <tr><td>ID:</td><td><input type = "text" name = "id" required ></td></tr>
                     <tr><td>Password:</td> <td><input type= "password" name = "pass" required></td></tr>
                     <tr><td><input type = "submit" value = "Login" class = "btn btn-primary"></td></tr>
@@ -26,4 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </table>
         </div>
     </div>
+    <form action = "<?=Url::to(['site/register'])?>">
+            <input type = "submit" value="Register" class = "btn btn-primary">
+        </form>
 </div>

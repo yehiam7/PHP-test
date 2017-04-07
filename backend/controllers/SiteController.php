@@ -7,6 +7,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use app\models\student;
+use app\models\Ta;
 session_start();
 /**
  * Site controller
@@ -28,6 +29,28 @@ class SiteController extends Controller{
             return $this->render('loginp');
         }
     }   
+    public function actionRegister(){
+        if(!isset($_POST['name'])){
+            return $this->render('regpage');
+        }   
+        $conn = \Yii::$app->db;
+        $transaction = $conn->beginTransaction();
+        try{
+            Yii::$app->db->createCommand()->insert('student' , ['name' => $_POST['name'] , 'password' => $_POST['pass'] , 'gpa' => $_POST['gpa'] , ])->execute();    
+            if($_POST['ta'] = 'TA' ){
+                Yii::$app->db->createCommand()->insert('TA' , ['name' => $_POST['name'] , 'password' => $_POST['pass'] , 'gpa' => $_POST['gpa'] , ])->execute();    
+                if($_POST['gpa'] < 3){
+                    $transaction->rollback();
+                }
+                else{
+                    $transaction->commit();
+                }
+            }
+        }
+        catch(Exception $e){
+            $transaction->rollback();
+        } 
+    }
     public function actionLoginproject(){
         if(!isset($_POST['id'])){
             return $this->render('loginp');
@@ -35,40 +58,11 @@ class SiteController extends Controller{
         $id = $_POST['id'];
         $password = $_POST['pass'];
         $student = student::findOne(['id' => $id , 'password' => $password]);
-        if(sizeof($student) > 0){
-            $_SESSION['id'] =$id;
-            return $this->render('projectHome' , ['student' => $student ,]);
-        }
-        else{
-            return $this->render('loginp');
-        }
+        if(count($student) > 0){
+            $_SESSION['id'] =$id;             
+            return $this->render('projectHome' , ['student' => $student , ]);
+        }    
     }
-    /*
-    public function actionProject(){
-        if(!isset($_SESSION['id'])){
-            return $this->render('loginp');
-        }
-        $id = $_SESSION['id'];
-        $student = student::findOne($id);
-        if ( sizeof($student) ){
-            $_SESSION['id'] = $id ;
-            return $this->render('projectHome' , ['student' => $student ,] );
-        }
-    }
-    
-    public function actionLoginForm(){
-        if(!isset($_POST['id'])){
-            return $this->render('loginp');
-        }
-        $id=$_POST['id'];
-        $password = $_POST['password'];
-        $student = student::findOne(['id' => $id , 'password' => $password   , ]);
-        if ( sizeof($student) ){
-            $_SESSION['id'] = $id ;
-            return $this->render('projectHome' , ['student' => $student ,] );
-        }
-        
-    }*/
     public function actionUpdateinfo(){
         if(!isset($_POST['spass'])){
             $id = $_SESSION['id'];
