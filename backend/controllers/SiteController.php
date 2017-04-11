@@ -78,7 +78,9 @@ class SiteController extends Controller{
         $student = student::findOne($id);
         return $this->render('projectHome' , ['student' => $student ,] );
     }
-    
+    public function actionAdd(){
+        return $this->render('rowadd');
+    }
 
     
     /**
